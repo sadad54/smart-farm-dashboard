@@ -49,7 +49,7 @@ export function WeatherCard({ readings }: { readings: Record<string, number> }) 
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ repeat: Infinity, duration: 2 }}
           >
-            🌧️ It&apos;s raining! Plants are happy! 🎉
+            🌧️ It's raining! Plants are happy! 🎉
           </motion.p>
         )}
       </div>
