@@ -8,12 +8,22 @@ import { motion, AnimatePresence } from "framer-motion";export function DeviceSt
       animate={{ opacity: 1, y: 0 }}
       className="absolute top-4 right-4 z-10"
     >
-      <span className={`px-4 py-2 text-sm font-medium rounded-full flex items-center gap-2 shadow-lg ${
-        isOnline ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600 animate-pulse"
-      }`}>
-        <span className={`block w-2.5 h-2.5 rounded-full ${isOnline ? "bg-green-500 animate-pulse" : "bg-gray-400"}`}></span>
-        {isOnline ? "Farm Online" : "Connecting..."}
-      </span>
+      <motion.span 
+        className={`px-6 py-3 text-base font-fredoka font-bold rounded-full flex items-center gap-3 shadow-xl border-2 ${
+          isOnline ? "bg-gradient-to-r from-kid-green-100 to-kid-green-200 text-kid-green-800 border-kid-green-300" : "bg-gradient-to-r from-kid-orange-100 to-kid-orange-200 text-kid-orange-800 border-kid-orange-300 animate-pulse"
+        }`}
+        animate={isOnline ? { scale: [1, 1.05, 1] } : {}}
+        transition={{ repeat: Infinity, duration: 2 }}
+      >
+        <motion.span 
+          className={`block w-3 h-3 rounded-full ${isOnline ? "bg-kid-green-500" : "bg-kid-orange-500"}`}
+          animate={isOnline ? { scale: [1, 1.2, 1] } : {}}
+          transition={{ repeat: Infinity, duration: 1 }}
+        ></motion.span>
+        <span className="flex items-center gap-2">
+          {isOnline ? "🟢 Farm Online!" : "🔄 Connecting..."}
+        </span>
+      </motion.span>
     </motion.div>
   );
 }

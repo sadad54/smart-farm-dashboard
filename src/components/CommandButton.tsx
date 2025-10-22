@@ -40,12 +40,27 @@ export function CommandButton({ label, icon, onClick, cooldown = 5 }: {
     <motion.button
       disabled={isDisabled}
       onClick={handleClick}
-      className={`flex items-center justify-center gap-2 px-6 py-3 text-white rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600`}
-      whileHover={{ scale: isDisabled ? 1 : 1.05 }}
-      whileTap={{ scale: isDisabled ? 1 : 0.95 }}
+      className={`flex items-center justify-center gap-3 px-8 py-4 text-white rounded-3xl font-fredoka font-bold text-xl shadow-2xl transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed border-4 ${
+        isDisabled 
+          ? "bg-gradient-to-r from-gray-400 to-gray-500 border-gray-300" 
+          : "bg-gradient-to-r from-kid-green-400 to-kid-blue-400 hover:from-kid-green-500 hover:to-kid-blue-500 border-kid-yellow-300 hover:border-kid-yellow-400"
+      }`}
+      whileHover={{ scale: isDisabled ? 1 : 1.1, rotate: isDisabled ? 0 : 2 }}
+      whileTap={{ scale: isDisabled ? 1 : 0.9 }}
     >
-      <span className="text-2xl">{icon}</span>
-      {isDisabled ? `Wait ${cd}s...` : label}
+      <motion.span 
+        className="text-3xl"
+        animate={!isDisabled ? { 
+          scale: [1, 1.2, 1],
+          rotate: [0, 10, -10, 0]
+        } : {}}
+        transition={{ repeat: Infinity, duration: 2 }}
+      >
+        {icon}
+      </motion.span>
+      <span className="font-fredoka">
+        {isDisabled ? `Wait ${cd}s...` : label}
+      </span>
     </motion.button>
   );
 }
