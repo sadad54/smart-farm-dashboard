@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Droplets, Sun, Thermometer, Wind, Sparkles, Trophy, Book, TrendingUp, AlertTriangle, CloudRain, Bird } from "lucide-react";
+import {  CloudRain } from "lucide-react";
 export function WeatherCard({ readings }: { readings: Record<string, number> }) {
   const temp = readings["temp"] ?? 25;
   const rain = readings["rain"] ?? 0;
@@ -49,7 +49,7 @@ export function WeatherCard({ readings }: { readings: Record<string, number> }) 
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ repeat: Infinity, duration: 2 }}
           >
-            🌧️ It's raining! Plants are happy! 🎉
+            🌧️ It&apos;s raining! Plants are happy! 🎉
           </motion.p>
         )}
       </div>

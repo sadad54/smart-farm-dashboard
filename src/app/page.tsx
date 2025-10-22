@@ -1,10 +1,10 @@
 // src/app/page.tsx
 "use client";
 import { useEffect, useState, useMemo } from "react";
-import { supabase } from "@/lib/supabase";
+
 import { SensorCard } from "@/components/SensorCard";
 import { CommandButton } from "@/components/CommandButton";
-import { LiveChart } from "@/components/LiveChart";
+
 import { MissionPanel } from "@/components/MissionPanel";
 import { AICoach } from "@/components/AICoach";
 import { ActionTimeline } from "@/components/ActionTimeline";
@@ -16,12 +16,7 @@ import { WeatherCard } from "@/components/WeatherCard";
 import { motion, AnimatePresence } from "framer-motion";
 import {PlantHealthMeter} from "@/components/PlantHealthMeter"
 
-const mockSupabase = {
-  channel: () => ({
-    on: () => ({ subscribe: () => {} }),
-  }),
-  removeChannel: () => {},
-};
+
 
 
 type TimelineItem = { icon: string; text: string; t: number };
