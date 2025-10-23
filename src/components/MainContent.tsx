@@ -370,7 +370,7 @@ import { PlantHealthMeter } from "@/components/PlantHealthMeter";
 import { Droplets, Sun, Thermometer, Wind, Clock, Footprints } from "lucide-react";
 import { HistoryLog } from "@/components/HistoryLog";
 import { LightControl } from "@/components/LightControl";
-
+import { BadgeDisplay } from "@/components/BadgeDisplay";
 interface MainContentProps {
   readings: Record<string, number>;
   onWater: () => void;
@@ -490,9 +490,10 @@ export function MainContent({ readings, onWater, badges, activeSection }: MainCo
   const renderHome = () => (
     <div className="space-y-6">
       <SectionHeading title="Device Status" emoji="📊" />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <PlantHealthMeter readings={readings} />
         <WaterTankCard />
+        <BadgeDisplay badges={badges} />
       </div>
       <SensorsRow />
       <ActionsRow />
