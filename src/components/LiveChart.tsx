@@ -8,7 +8,7 @@ import {
   CategoryScale,
   LinearScale
 } from "chart.js";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase-server";
 
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale);
 
