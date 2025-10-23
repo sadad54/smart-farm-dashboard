@@ -9,7 +9,8 @@ import {
   Brain,
   Droplets,
   Activity,
-  LogOut
+  LogOut,
+  PartyPopper
 } from "lucide-react";
 
 interface SidebarProps {
@@ -27,7 +28,7 @@ export function Sidebar({ activeSection, onSectionChange, onLogout, userInfo }: 
   const sidebarItems = [
     { id: "home", label: "Home", icon: Home, color: "from-kid-orange-400 to-kid-orange-500" },
     { id: "ai-insights", label: "AI Insights", icon: Brain, color: "from-kid-blue-400 to-kid-blue-500" },
-    { id: "fun-facts", label: "Fun Facts", icon: Brain, color: "from-kid-pink-300 to-kid-purple-400" },
+    { id: "fun-facts", label: "Fun Facts", icon: PartyPopper, color: "from-kid-pink-300 to-kid-purple-400" },
     { id: "light", label: "Light", icon: Lightbulb, color: "from-kid-yellow-400 to-kid-yellow-500" },
     { id: "motion", label: "Motion", icon: Activity, color: "from-kid-green-400 to-kid-green-500" },
     { id: "temperature", label: "Temperature", icon: Thermometer, color: "from-kid-orange-400 to-kid-orange-500" },
