@@ -1,7 +1,7 @@
 // src/app/page.tsx
 "use client";
 import { useEffect, useState, useMemo } from "react";
-
+import { supabase } from "@/lib/supabase-server";
 import { Sidebar } from "@/components/Sidebar";
 import { MainContent } from "@/components/MainContent";
 import { DeviceStatus } from "@/components/DeviceStatus";
@@ -36,7 +36,27 @@ export default function Page() {
     id: "855",
     time: "678 AM"
   };
+useEffect(() => {
+  const channel = supabase
+    .channel('public:sensor_readings')
+    .on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'sensor_readings' },
+      (payload) => {
+        const { metric, value } = payload.new;
+        setReadings((prev) => ({
+          ...prev,
+          [metric]: value,
+          _ts: Date.now(),
+        }));
+      }
+    )
+    .subscribe();
 
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
   // Simulate sensor updates
   useEffect(() => {
     const interval = setInterval(() => {
@@ -58,10 +78,30 @@ export default function Page() {
     }, 10000);
     return () => clearTimeout(timeout);
   }, []);
-
+  const issueCommand = async (action: string) => {
+    try {
+      await fetch('/api/issue-command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          device_id: 'device_001',
+          command: { action },
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to issue command:", error);
+    }
+  };
   const handleWater = async () => {
+    await issueCommand('water');
     window.dispatchEvent(new Event('plant-watered'));
-    setReadings(prev => ({ ...prev, soil: 1800 }));
+    
+  };
+      const handleFan = async () => {
+    await issueCommand('fan');
+  };
+    const handleLight = async () => {
+    await issueCommand('light');
   };
 
   const addBadge = (badge: string) => {
@@ -130,6 +170,9 @@ export default function Page() {
         <MainContent 
           readings={readings}
           onWater={handleWater}
+          onFan={handleFan}
+          onLight={handleLight}
+          addBadge={addBadge}
           badges={badges}
           activeSection={activeSection}
         />

@@ -374,11 +374,14 @@ import { BadgeDisplay } from "@/components/BadgeDisplay";
 interface MainContentProps {
   readings: Record<string, number>;
   onWater: () => void;
+  onLight: () => void;
+  onFan: () => void;
+  addBadge: (badge: string) => void;
   badges: string[];
   activeSection: string;
 }
 
-export function MainContent({ readings, onWater, badges, activeSection }: MainContentProps) {
+export function MainContent({ readings, onWater, onLight, onFan, addBadge, badges, activeSection }: MainContentProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -592,7 +595,7 @@ export function MainContent({ readings, onWater, badges, activeSection }: MainCo
           Plants use a process called photosynthesis to turn sunlight into food. It's like they're eating sunshine!
         </p>
       </div>
-      <div className="flex justify-start">
+      <div className="flex justify-center">
         <CommandButton label="💡 Toggle Light" icon="💡" onClick={() => {}} />
       </div>
     </div>
@@ -611,7 +614,7 @@ export function MainContent({ readings, onWater, badges, activeSection }: MainCo
           <MotionCard />
           <HistoryLog title="Motion Log" icon={<Footprints />} logs={motionLogs} />
         </div>
-        <div className="flex justify-start">
+        <div className="flex justify-center">
           <CommandButton label="🐾 Scarecrow" icon="👻" onClick={() => {}} />
         </div>
       </div>
@@ -639,7 +642,7 @@ export function MainContent({ readings, onWater, badges, activeSection }: MainCo
         </div>
         <p className="text-center mt-2 font-fredoka text-kid-orange-600">Ideal range: 18°C - 28°C</p>
       </div>
-      <div className="flex justify-start">
+      <div className="flex justify-center">
         <CommandButton label="🌬️ Run Fan" icon="🌬️" onClick={() => {}} />
       </div>
     </div>
@@ -658,7 +661,7 @@ export function MainContent({ readings, onWater, badges, activeSection }: MainCo
           <WaterTankCard />
           <HistoryLog title="Watering History" icon={<Clock />} logs={waterLogs} />
         </div>
-        <div className="flex justify-start gap-4">
+        <div className="flex justify-center gap-4">
           <CommandButton label="💧 Water Plant" icon="💧" onClick={onWater} />
           <CommandButton label="⏰ Schedule Watering" icon="⏰" onClick={() => {}} />
         </div>
