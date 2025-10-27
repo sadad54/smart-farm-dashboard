@@ -485,8 +485,8 @@ export function MainContent({ readings, onWater, onLight, onFan, addBadge, badge
   const ActionsRow = () => (
     <div className="flex flex-wrap justify-center gap-4">
       <CommandButton label="💧 Water Plant" icon="💧" onClick={onWater} />
-      <CommandButton label="🌬️ Run Fan" icon="🌬️" onClick={() => {}} />
-      <CommandButton label="💡 Toggle Light" icon="💡" onClick={() => {}} />
+      <CommandButton label="🌬️ Run Fan" icon="🌬️" onClick={onFan} />
+      <CommandButton label="💡 Toggle Light" icon="💡" onClick={onLight} />
     </div>
   );
 
@@ -596,7 +596,7 @@ export function MainContent({ readings, onWater, onLight, onFan, addBadge, badge
         </p>
       </div>
       <div className="flex justify-center">
-        <CommandButton label="💡 Toggle Light" icon="💡" onClick={() => {}} />
+        <CommandButton label="💡 Toggle Light" icon="💡" onClick={onLight} />
       </div>
     </div>
   );
@@ -643,7 +643,7 @@ export function MainContent({ readings, onWater, onLight, onFan, addBadge, badge
         <p className="text-center mt-2 font-fredoka text-kid-orange-600">Ideal range: 18°C - 28°C</p>
       </div>
       <div className="flex justify-center">
-        <CommandButton label="🌬️ Run Fan" icon="🌬️" onClick={() => {}} />
+        <CommandButton label="🌬️ Run Fan" icon="🌬️" onClick={onFan} />
       </div>
     </div>
   );

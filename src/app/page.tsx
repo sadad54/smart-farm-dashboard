@@ -84,7 +84,7 @@ useEffect(() => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          device_id: 'device_001',
+          device_id: 'farm_001',
           command: { action },
         }),
       });
