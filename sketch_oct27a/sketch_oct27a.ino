@@ -201,22 +201,56 @@ void acknowledgeCommand(long id, bool ok) {
 }
 
 void checkCommands() {
-  if (WiFi.status() != WL_CONNECTED) return;
+  Serial.println("DEBUG: Entering checkCommands()..."); // <<< ADDED THIS LINE
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("DEBUG: WiFi not connected, skipping command check."); // <<< ADDED THIS LINE
+    return; // Exit if WiFi is not connected
+  }
+
+  Serial.println("DEBUG: WiFi connected, proceeding with command check."); // <<< ADDED THIS LINE
+
   HTTPClient http;
   String url = String(API_BASE) + "/commands?device_id=" + DEVICE_ID + "&status=pending";
+  Serial.printf("DEBUG: Command check URL: %s\n", url.c_str()); // <<< ADDED THIS LINE
+
   http.begin(url);
   int code = http.GET();
-  if (code==200){
+  Serial.printf("DEBUG: Command check GET request returned HTTP %d\n", code); // <<< ADDED THIS LINE
+
+  if (code == 200) {
+    Serial.println("DEBUG: Received HTTP 200, parsing commands..."); // <<< ADDED THIS LINE
     StaticJsonDocument<1024> doc;
-    deserializeJson(doc,http.getString());
-    JsonArray cmds = doc.as<JsonArray>();
-    for(JsonObject c:cmds){
-      long id = c["id"];
-      JsonObject command = c["command"];
-      Serial.printf("Executing cmd %ld\n",id);
-      executeCommand(command);
-      acknowledgeCommand(id,true);
+    // Use a temporary variable for http.getString() for easier debugging if needed
+    String responsePayload = http.getString();
+    Serial.printf("DEBUG: Response payload: %s\n", responsePayload.c_str()); // <<< ADDED THIS LINE (Optional, can be long)
+
+    DeserializationError error = deserializeJson(doc, responsePayload);
+
+    if (error) {
+       Serial.print("DEBUG: deserializeJson() failed: ");
+       Serial.println(error.f_str()); // <<< ADDED ERROR HANDLING
+       http.end();
+       return;
     }
+
+
+    JsonArray cmds = doc.as<JsonArray>();
+    if (cmds.size() > 0) { // <<< ADDED CHECK if any commands were received
+        Serial.printf("DEBUG: Found %d pending command(s).\n", cmds.size());
+        for (JsonObject c : cmds) {
+          long id = c["id"];
+          JsonObject command = c["command"];
+          Serial.printf("Executing cmd %ld\n", id); // Original log
+          executeCommand(command);
+          acknowledgeCommand(id, true); // Assuming success for now
+        }
+    } else {
+        Serial.println("DEBUG: No pending commands found."); // <<< ADDED THIS LINE
+    }
+  } else {
+    // Log if the GET request failed for reasons other than no commands (e.g., 404, 500)
+    Serial.printf("DEBUG: Command check GET request failed with code %d\n", code); // <<< ADDED THIS LINE
   }
   http.end();
 }
@@ -260,6 +294,7 @@ void loop() {
     lastSensorSend = now;
   }
   if (now - lastCommandCheck >= commandInterval) {
+    Serial.printf("DEBUG: Time condition met for command check. Now: %lu, LastCheck: %lu\n", now, lastCommandCheck);
     checkCommands();
     lastCommandCheck = now;
   }
