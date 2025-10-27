@@ -80,7 +80,7 @@ useEffect(() => {
   }, []);
   const issueCommand = async (action: string) => {
     try {
-      await fetch('/api/issue-command', {
+      await fetch('/api/commands', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
