@@ -6,13 +6,14 @@ import { Sidebar } from "@/components/Sidebar";
 import { MainContent } from "@/components/MainContent";
 import { DeviceStatus } from "@/components/DeviceStatus";
 import { AnimalDetector } from "@/components/AnimalDetector";
-import { LandingPage } from "@/components/LandingPage";
+import { LandingPage as LandingPage1 } from "@/components/LandingPage";
+import { LandingPage as LandingPage2 } from "@/components/LandingPage2";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Section = "home" | "light" | "motion" | "temperature" | "light-sensor" | "ai-insights" | "fun-facts" | "water";
 
 export default function Page() {
-  const [showLanding, setShowLanding] = useState(true);
+  const [landingStage, setLandingStage] = useState<number>(0); // 0 = landing1, 1 = landing2, 2 = dashboard
   const [activeSection, setActiveSection] = useState<Section>("home");
   const [readings, setReadings] = useState<Record<string, number>>({
     soil: 2800,
@@ -109,24 +110,32 @@ export default function Page() {
   };
 
   const handleLogout = () => {
-    setShowLanding(true);
+    setLandingStage(0);
   };
 
-  const handleEnterApp = () => {
-    setShowLanding(false);
+  const handleEnterFromLanding1 = () => {
+    setLandingStage(1);
+  };
+
+  const handleEnterFromLanding2 = () => {
+    setLandingStage(2);
   };
 
   return (
     <AnimatePresence mode="wait">
-      {showLanding ? (
+      {landingStage < 2 ? (
         <motion.div
-          key="landing"
+          key={landingStage === 0 ? "landing1" : "landing2"}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.5 }}
         >
-          <LandingPage onEnter={handleEnterApp} />
+          {landingStage === 0 ? (
+            <LandingPage1 onEnter={handleEnterFromLanding1} />
+          ) : (
+            <LandingPage2 onEnter={handleEnterFromLanding2} />
+          )}
         </motion.div>
       ) : (
         <motion.div
