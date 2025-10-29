@@ -8,12 +8,15 @@ import { DeviceStatus } from "@/components/DeviceStatus";
 import { AnimalDetector } from "@/components/AnimalDetector";
 import { LandingPage as LandingPage1 } from "@/components/LandingPage";
 import { LandingPage as LandingPage2 } from "@/components/LandingPage2";
+// Import the new StartScreen component
+import { StartScreen } from "@/components/StartScreen";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Section = "home" | "light" | "motion" | "temperature" | "light-sensor" | "ai-insights" | "fun-facts" | "water";
 
 export default function Page() {
-  const [landingStage, setLandingStage] = useState<number>(0); // 0 = landing1, 1 = landing2, 2 = dashboard
+  // 0 = landing1, 1 = landing2, 2 = startScreen, 3 = dashboard
+  const [landingStage, setLandingStage] = useState<number>(0);
   const [activeSection, setActiveSection] = useState<Section>("home");
   const [readings, setReadings] = useState<Record<string, number>>({
     soil: 2800,
@@ -118,14 +121,29 @@ export default function Page() {
   };
 
   const handleEnterFromLanding2 = () => {
+    // Update to go to stage 2 (StartScreen)
     setLandingStage(2);
+  };
+
+  // Add new handler for StartScreen
+  const handleEnterFromStartScreen = () => {
+    setLandingStage(3);
+  };
+
+  const getLandingKey = () => {
+    if (landingStage === 0) return "landing1";
+    if (landingStage === 1) return "landing2";
+    if (landingStage === 2) return "startScreen";
+    return "dashboard";
   };
 
   return (
     <AnimatePresence mode="wait">
-      {landingStage < 2 ? (
+      {/* Update condition to include new stage 2 */}
+      {landingStage < 3 ? (
         <motion.div
-          key={landingStage === 0 ? "landing1" : "landing2"}
+          // Update key to be dynamic based on stage
+          key={getLandingKey()}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
@@ -133,8 +151,11 @@ export default function Page() {
         >
           {landingStage === 0 ? (
             <LandingPage1 onEnter={handleEnterFromLanding1} />
-          ) : (
+          ) : landingStage === 1 ? (
             <LandingPage2 onEnter={handleEnterFromLanding2} />
+          ) : (
+            // Render StartScreen at stage 2
+            <StartScreen onEnter={handleEnterFromStartScreen} />
           )}
         </motion.div>
       ) : (
